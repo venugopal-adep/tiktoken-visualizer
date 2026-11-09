@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTokenizer Studio 🔠 | Interactive BPE Tokenizer Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-muted: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-primary: #4f46e5;
+            --accent-hover: #4338ca;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0b0f19;
+                --bg-card: #111827;
+                --bg-muted: #1f2937;
+                --border-color: #374151;
+                --text-primary: #f9fafb;
+                --text-secondary: #cbd5e1;
+                --text-muted: #64748b;
+                --accent-primary: #6366f1;
+                --accent-hover: #818cf8;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Header */
+        .hero {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 40%, #8b5cf6 70%, #ec4899 100%);
+            border-radius: 18px;
+            padding: 28px 32px;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 30px -8px rgba(99, 102, 241, 0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            opacity: 0.95;
+            max-width: 820px;
+            line-height: 1.5;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 18px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: var(--bg-muted);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Controls Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        select, input[type="text"] {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .options-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            background: var(--bg-card);
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input {
+            accent-color: var(--accent-primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Text Input Area */
+        .textarea-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 14px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Metrics Dashboard */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Visual Tokens Container */
+        .tokens-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            padding: 12px 18px;
+            background: var(--bg-muted);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tokens-stream {
+            padding: 18px;
+            min-height: 140px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 14.5px;
+            line-height: 2.3;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .tok-chip {
+            display: inline;
+            padding: 3px 6px;
+            margin: 1.5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+
+        .tok-chip:hover {
+            filter: brightness(0.90);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+            z-index: 10;
+        }
+
+        .whitespace-glyph {
+            opacity: 0.45;
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .newline-glyph {
+            opacity: 0.65;
+            font-size: 13px;
+            user-select: none;
+            color: #ef4444;
+        }
+
+        /* Token Inspector Strip */
+        .inspector-strip {
+            background: var(--bg-muted);
+            border-top: 1px solid var(--border-color);
+            padding: 10px 18px;
+            font-size: 13px;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .inspector-prompt {
+            color: var(--text-muted);
+            font-size: 12.5px;
+        }
+
+        .inspector-badge {
+            background: var(--accent-primary);
+            color: white;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11.5px;
+        }
+
+        .inspector-code {
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Accordions / Panels */
+        .accordion-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 14px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-body {
+            padding: 16px 18px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        /* Code & Tables */
+        .code-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .btn-copy {
+            background: var(--bg-muted);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .table-responsive {
+            max-height: 380px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-muted);
+            font-weight: 600;
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        td {
+            font-family: var(--font-mono);
+        }
+
+        /* Model Comparison */
+        .compare-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .compare-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .compare-name {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .guide-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .guide-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent-primary);
+        }
+
+        .guide-section p, .guide-section li {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .guide-section ul {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Header -->
+        <header class="hero">
+            <h1>TikTokenizer Studio 🔠</h1>
+            <p>Interactive Byte Pair Encoding (BPE) Visualizer & Multi-Model Token Inspector for OpenAI models (GPT-4o, GPT-4, Codex, GPT-2). Powered by pure WebAssembly / client-side Tiktoken.</p>
+            <div class="hero-tags">
+                <span class="hero-badge">o200k_base (GPT-4o)</span>
+                <span class="hero-badge">cl100k_base (GPT-4)</span>
+                <span class="hero-badge">p50k_base (Codex)</span>
+                <span class="hero-badge">Zero Latency ⚡</span>
+                <span class="hero-badge">Client-Side WASM</span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="encode">🔍 Visual Tokenizer (Encode)</button>
+            <button class="tab-btn" data-tab="decode">🔄 Token Decoder (Decode)</button>
+            <button class="tab-btn" data-tab="compare">⚖️ Multi-Model Comparison</button>
+            <button class="tab-btn" data-tab="guide">📚 BPE Deep Dive</button>
+        </nav>
+
+        <!-- TAB 1: ENCODE -->
+        <section id="tab-encode" class="tab-panel active">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label class="control-label" for="model-select">Tokenizer Encoding</label>
+                    <select id="model-select">
+                        <option value="o200k_base" selected>o200k_base (GPT-4o, GPT-4o mini - 200k vocab)</option>
+                        <option value="cl100k_base">cl100k_base (GPT-4, GPT-3.5 Turbo, Ada-002 - 100k vocab)</option>
+                        <option value="p50k_base">p50k_base (Codex, text-davinci-002/003 - 50k vocab)</option>
+                        <option value="p50k_edit">p50k_edit (text-davinci-edit-001 - 50k vocab)</option>
+                        <option value="r50k_base">r50k_base (GPT-3 Legacy - 50k vocab)</option>
+                        <option value="gpt2">gpt2 (GPT-2 Foundational - 50k vocab)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="preset-select">Load Preset Sample</label>
+                    <select id="preset-select">
+                        <option value="">-- Choose an example --</option>
+                        <option value="hello">👋 Hello World & Punctuation</option>
+                        <option value="python">🐍 Python Code & Indentation</option>
+                        <option value="multilingual">🌍 Multilingual & Emojis (Hindi, Japanese, Arabic)</option>
+                        <option value="math">🔢 Numbers & Math Expressions</option>
+                        <option value="special">🔒 Special Tokens (<|endoftext|>)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="options-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-whitespace" checked>
+                    <span>Show whitespace glyphs (<code>·</code> space, <code>↵</code> newline, <code>⇥</code> tab)</span>
+                </label>
+                <div style="margin-left: auto; display: flex; gap: 8px;">
+                    <button class="btn-copy" id="btn-clear-text">Clear Text</button>
+                </div>
+            </div>
+
+            <div class="textarea-wrapper">
+                <textarea id="input-text" placeholder="Type or paste any text, code, or prompt to inspect tokens in real-time...">Hello, world! 🌍 Welcome to TikTokenizer Studio.
+Try typing or pasting any text, code, or emojis to visualize the tokens in real-time.</textarea>
+            </div>
+
+            <!-- Metrics Bar -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Tokens</div>
+                    <div class="metric-value" id="stat-tokens">0</div>
+                    <div class="metric-sub">Total tokens generated</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Characters</div>
+                    <div class="metric-value" id="stat-chars">0</div>
+                    <div class="metric-sub">Raw string length</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Chars / Token</div>
+                    <div class="metric-value" id="stat-ratio">0.00</div>
+                    <div class="metric-sub">Higher = better compression</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Bytes</div>
+                    <div class="metric-value" id="stat-bytes">0</div>
+                    <div class="metric-sub">UTF-8 encoded size</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Est. Cost (1M tokens)</div>
+                    <div class="metric-value" id="stat-cost">$0.000000</div>
+                    <div class="metric-sub">Based on model rates</div>
+                </div>
+            </div>
+
+            <!-- Visual Stream -->
+            <div class="tokens-section">
+                <div class="section-header">
+                    <span>Color-Coded Token Stream</span>
+                    <span id="model-tag-indicator" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-primary);">o200k_base</span>
+                </div>
+                <div class="tokens-stream" id="tokens-stream"></div>
+                <div class="inspector-strip" id="inspector-strip">
+                    <span class="inspector-prompt">💡 <strong>Hover over any token</strong> to inspect its ID, hex, byte length, and characters.</span>
+                </div>
+            </div>
+
+            <!-- Token IDs Export Accordion -->
+            <div class="accordion-block">
+                <div class="accordion-header" id="acc-export-head">
+                    <span>📋 Token IDs & Sequence Export</span>
+                    <button class="btn-copy" id="btn-copy-ids">Copy JSON Array</button>
+                </div>
+                <div class="accordion-body">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Python / JSON Array:</p>
+                    <div class="code-box" id="json-array-box">[]</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin: 10px 0 6px 0;">Space-separated integer sequence:</p>
+                    <div class="code-box" id="space-seq-box"></div>
+                </div>
+            </div>
+
+            <!-- Token Breakdown Table -->
+            <div class="accordion-block">
+                <div class="accordion-header">
+                    <span>📊 Detailed Token Breakdown Table</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Token ID</th>
+                                    <th>Hex</th>
+                                    <th>Decoded String</th>
+                                    <th>Bytes (Hex)</th>
+                                    <th>Length</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: DECODE -->
+        <section id="tab-decode" class="tab-panel">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label class="control-label" for="decode-model-select">Decoder Encoding</label>
+                    <select id="decode-model-select">
+                        <option value="o200k_base" selected>o200k_base (GPT-4o, GPT-4o mini)</option>
+                        <option value="cl100k_base">cl100k_base (GPT-4, GPT-3.5 Turbo)</option>
+                        <option value="p50k_base">p50k_base (Codex)</option>
+                        <option value="gpt2">gpt2 (GPT-2)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="textarea-wrapper">
+                <label class="control-label" style="margin-bottom: 6px; display: block;">Enter Token IDs (comma or space separated or JSON array):</label>
+                <textarea id="decode-input-ids" style="height: 100px;">13225, 11, 2375, 0, 130321, 235</textarea>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <button class="btn-primary" id="btn-run-decode">Decode Tokens 🚀</button>
+            </div>
+
+            <div class="textarea-wrapper">
+                <label class="control-label" style="margin-bottom: 6px; display: block;">Decoded Output Text:</label>
+                <textarea id="decode-output-text" readonly style="height: 100px; background: var(--bg-muted);"></textarea>
+            </div>
+
+            <div class="tokens-section">
+                <div class="section-header">
+                    <span>Reconstructed Visual Token Stream</span>
+                </div>
+                <div class="tokens-stream" id="decode-stream"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: COMPARE -->
+        <section id="tab-compare" class="tab-panel">
+            <p style="margin-bottom: 12px; color: var(--text-secondary); font-size: 14.5px;">
+                Compare how different tokenizer generations (GPT-2, Codex, GPT-4, and GPT-4o) encode the exact same prompt. Notice how <strong>o200k_base</strong> achieves 20-40% compression improvements on code and non-English text!
+            </p>
+            <div class="textarea-wrapper">
+                <textarea id="compare-input-text" style="height: 90px;">Artificial Intelligence is revolutionizing natural language processing across multiple languages: हिंदी, 日本語, and Français! 🚀</textarea>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <button class="btn-primary" id="btn-run-compare">Update Comparison ⚡</button>
+            </div>
+
+            <div id="compare-results"></div>
+        </section>
+
+        <!-- TAB 4: GUIDE -->
+        <section id="tab-guide" class="tab-panel">
+            <div class="guide-section">
+                <h2>1. What is Byte Pair Encoding (BPE)?</h2>
+                <p>Language models don't read words or letters directly—they operate on integer <strong>Tokens</strong>. BPE is a subword tokenization algorithm that begins with individual bytes and iteratively merges the most frequently co-occurring byte pairs in the training corpus into single tokens.</p>
+                <p>This allows models to compress common words like <code>" the"</code> or <code>"function"</code> into a single token, while gracefully breaking down unknown or rare words into smaller subword chunks or individual bytes.</p>
+            </div>
+
+            <div class="guide-section">
+                <h2>2. Why does leading whitespace matter?</h2>
+                <p>In modern tokenizers like <code>cl100k_base</code> and <code>o200k_base</code>, whitespace is usually attached to the <em>front</em> of the following word rather than the end of the previous word:</p>
+                <ul>
+                    <li><code>" hello"</code> (with a leading space) is Token ID <code>24748</code> in o200k_base.</li>
+                    <li><code>"hello"</code> (without space) is Token ID <code>40617</code> in o200k_base!</li>
+                </ul>
+                <p>This explains why inconsistent spaces or trailing spaces can alter token boundaries and change how LLMs attend to words.</p>
+            </div>
+
+            <div class="guide-section">
+                <h2>3. Evolution of OpenAI Tokenizers</h2>
+                <div class="table-responsive" style="margin-top: 10px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tokenizer</th>
+                                <th>Models</th>
+                                <th>Vocab Size</th>
+                                <th>Key Characteristics</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>gpt2</code> / <code>r50k</code></td>
+                                <td>GPT-2, GPT-3</td>
+                                <td>50,257</td>
+                                <td>Foundational 50k vocabulary. Inefficient on code and non-English languages.</td>
+                            </tr>
+                            <tr>
+                                <td><code>p50k_base</code></td>
+                                <td>Codex, Davinci</td>
+                                <td>50,281</td>
+                                <td>Tuned for programming languages and source code indentation.</td>
+                            </tr>
+                            <tr>
+                                <td><code>cl100k_base</code></td>
+                                <td>GPT-4, GPT-3.5 Turbo</td>
+                                <td>100,277</td>
+                                <td>2x vocabulary size. Significantly improved compression across code and foreign languages.</td>
+                            </tr>
+                            <tr>
+                                <td><code>o200k_base</code></td>
+                                <td>GPT-4o, GPT-4o mini</td>
+                                <td>200,019</td>
+                                <td>200k vocabulary. Up to <strong>40% fewer tokens</strong> for Hindi, Japanese, Arabic, and Python!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Script loaded from local bundle or CDN fallback -->
+    <script type="module">
+        let tiktokenModule = null;
+
+        // Try loading local bundle, fallback to esm.sh CDN if needed
+        try {
+            tiktokenModule = await import("./tiktoken.bundle.js");
+        } catch (err) {
+            console.warn("Could not load local bundle, falling back to CDN:", err);
+            try {
+                tiktokenModule = await import("https://esm.sh/js-tiktoken@1.0.21");
+            } catch (cdnErr) {
+                console.error("Failed to load tiktoken from CDN as well:", cdnErr);
+            }
+        }
+
+        const { getEncoding } = tiktokenModule;
+
+        const PALETTE = [
+            { bg: "#ede9fe", border: "#8b5cf6", text: "#5b21b6" }, // Violet
+            { bg: "#dbeafe", border: "#3b82f6", text: "#1e40af" }, // Blue
+            { bg: "#dcfce7", border: "#22c55e", text: "#166534" }, // Green
+            { bg: "#fef3c7", border: "#f59e0b", text: "#92400e" }, // Amber
+            { bg: "#fee2e2", border: "#ef4444", text: "#991b1b" }, // Red
+            { bg: "#fce7f3", border: "#ec4899", text: "#9d174d" }, // Pink
+            { bg: "#ccfbf1", border: "#14b8a6", text: "#115e59" }, // Teal
+            { bg: "#ffedd5", border: "#f97316", text: "#9a3412" }, // Orange
+            { bg: "#e0e7ff", border: "#6366f1", text: "#3730a3" }, // Indigo
+            { bg: "#ecfccb", border: "#84cc16", text: "#3f6212" }, // Lime
+            { bg: "#cffafe", border: "#06b6d4", text: "#155e75" }, // Cyan
+            { bg: "#f3e8ff", border: "#a855f7", text: "#6b21a8" }  // Purple
+        ];
+
+        const PRESETS = {
+            hello: "Hello, world! Welcome to the interactive Tiktokenizer visualizer. How does Byte Pair Encoding work?",
+            python: `def fibonacci(n: int) -> list[int]:
+    """Return first n Fibonacci numbers."""
+    if n <= 0:
+        return []
+    seq = [0, 1]
+    while len(seq) < n:
+        seq.append(seq[-1] + seq[-2])
+    return seq[:n]`,
+            multilingual: "OpenAI GPT-4o supports multilingual tokenization! 🚀\nहिंदी: नमस्ते दुनिया, आप कैसे हैं?\n日本語: こんにちは世界！\nالعربية: مرحباً بالعالم\nFrançais: Bonjour le monde! 🌍✨",
+            math: "Calculate: 1234567890 + 9876543210 = 11111111100\nPi: 3.141592653589793\nPrice: $49.99 (Discount: 15% off) -> Total: $42.49",
+            special: "<|endoftext|>\n<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nHello!<|im_end|>"
+        };
+
+        const MODEL_PRICES = {
+            o200k_base: 2.50,
+            cl100k_base: 10.00,
+            p50k_base: 20.00,
+            p50k_edit: 20.00,
+            r50k_base: 20.00,
+            gpt2: 0.00
+        };
+
+        // Cache initialized encodings
+        const encCache = {};
+        function getEnc(name) {
+            if (!encCache[name]) {
+                encCache[name] = getEncoding(name);
+            }
+            return encCache[name];
+        }
+
+        // Tab Switching
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+                document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+                btn.classList.add("active");
+                const panel = document.getElementById("tab-" + btn.dataset.tab);
+                if (panel) panel.classList.add("active");
+                if (btn.dataset.tab === "compare") runComparison();
+            });
+        });
+
+        // Elements
+        const inputText = document.getElementById("input-text");
+        const modelSelect = document.getElementById("model-select");
+        const presetSelect = document.getElementById("preset-select");
+        const showWhitespaceCb = document.getElementById("show-whitespace");
+        const tokensStream = document.getElementById("tokens-stream");
+        const inspectorStrip = document.getElementById("inspector-strip");
+        const statTokens = document.getElementById("stat-tokens");
+        const statChars = document.getElementById("stat-chars");
+        const statRatio = document.getElementById("stat-ratio");
+        const statBytes = document.getElementById("stat-bytes");
+        const statCost = document.getElementById("stat-cost");
+        const jsonArrayBox = document.getElementById("json-array-box");
+        const spaceSeqBox = document.getElementById("space-seq-box");
+        const tableBody = document.getElementById("table-body");
+        const modelTagIndicator = document.getElementById("model-tag-indicator");
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatTokenHtml(tokenStr, showWhitespace) {
+            if (!showWhitespace) {
+                return escapeHtml(tokenStr).replace(/\n/g, "<br/>");
+            }
+            let out = "";
+            for (let i = 0; i < tokenStr.length; i++) {
+                const ch = tokenStr[i];
+                if (ch === " ") out += '<span class="whitespace-glyph">·</span>';
+                else if (ch === "\n") out += '<span class="newline-glyph">↵</span><br/>';
+                else if (ch === "\t") out += '<span class="whitespace-glyph">⇥   </span>';
+                else out += escapeHtml(ch);
+            }
+            return out;
+        }
+
+        function toHexBytes(str) {
+            const bytes = new TextEncoder().encode(str);
+            return Array.from(bytes).map(b => "0x" + b.toString(16).padStart(2, "0").toUpperCase()).join(" ");
+        }
+
+        function updateTokenizer() {
+            const text = inputText.value;
+            const modelName = modelSelect.value;
+            const showWs = showWhitespaceCb.checked;
+            modelTagIndicator.innerText = modelName;
+
+            if (!text) {
+                tokensStream.innerHTML = '<div style="color: var(--text-muted); font-style: italic;">Enter text above to see tokens rendered.</div>';
+                statTokens.innerText = "0";
+                statChars.innerText = "0";
+                statRatio.innerText = "0.00";
+                statBytes.innerText = "0";
+                statCost.innerText = "$0.000000";
+                jsonArrayBox.innerText = "[]";
+                spaceSeqBox.innerText = "";
+                tableBody.innerHTML = "";
+                return;
+            }
+
+            const enc = getEnc(modelName);
+            const tokens = enc.encode(text);
+            const totalTokens = tokens.length;
+            const totalChars = text.length;
+            const totalBytes = new TextEncoder().encode(text).length;
+            const ratio = totalTokens > 0 ? (totalChars / totalTokens).toFixed(2) : "0.00";
+            const pricePerM = MODEL_PRICES[modelName] || 2.50;
+            const estCost = ((totalTokens / 1000000) * pricePerM).toFixed(6);
+
+            statTokens.innerText = totalTokens.toLocaleString();
+            statChars.innerText = totalChars.toLocaleString();
+            statRatio.innerText = ratio;
+            statBytes.innerText = totalBytes.toLocaleString();
+            statCost.innerText = "$" + estCost;
+
+            jsonArrayBox.innerText = JSON.stringify(tokens);
+            spaceSeqBox.innerText = tokens.join(" ");
+
+            // Render chips and build table
+            let chipsHtml = "";
+            let tableHtml = "";
+
+            tokens.forEach((id, idx) => {
+                const color = PALETTE[idx % PALETTE.length];
+                const rawStr = enc.decode([id]);
+                const displayStr = formatTokenHtml(rawStr, showWs);
+                const hexId = "0x" + id.toString(16).toUpperCase().padStart(4, "0");
+                const hexBytes = toHexBytes(rawStr);
+                const byteLen = new TextEncoder().encode(rawStr).length;
+
+                const style = `background-color: ${color.bg}; border: 1px solid ${color.border}; color: ${color.text};`;
+
+                chipsHtml += `<span class="tok-chip" data-idx="${idx}" data-id="${id}" data-hex="${hexId}" data-bytes="${hexBytes}" data-len="${byteLen}" data-str="${escapeHtml(JSON.stringify(rawStr))}" style="${style}">${displayStr}</span>`;
+
+                tableHtml += `
+                    <tr>
+                        <td>#${idx}</td>
+                        <td><strong>${id}</strong></td>
+                        <td><code>${hexId}</code></td>
+                        <td>${escapeHtml(JSON.stringify(rawStr))}</td>
+                        <td><code>${hexBytes}</code></td>
+                        <td>${byteLen}B</td>
+                    </tr>
+                `;
+            });
+
+            tokensStream.innerHTML = chipsHtml;
+            tableBody.innerHTML = tableHtml;
+
+            // Attach hover event listeners
+            tokensStream.querySelectorAll(".tok-chip").forEach(chip => {
+                chip.addEventListener("mouseenter", () => {
+                    inspectorStrip.innerHTML = `
+                        <span class="inspector-badge">Token #${chip.dataset.idx}</span>
+                        <span>ID: <strong>${chip.dataset.id}</strong> (<code class="inspector-code">${chip.dataset.hex}</code>)</span>
+                        <span>Bytes: <code class="inspector-code">${chip.dataset.bytes}</code> (${chip.dataset.len}B)</span>
+                        <span>String: <code class="inspector-code">${chip.dataset.str}</code></span>
+                    `;
+                });
+            });
+        }
+
+        // Event listeners
+        inputText.addEventListener("input", updateTokenizer);
+        modelSelect.addEventListener("change", updateTokenizer);
+        showWhitespaceCb.addEventListener("change", updateTokenizer);
+
+        presetSelect.addEventListener("change", () => {
+            const key = presetSelect.value;
+            if (key && PRESETS[key]) {
+                inputText.value = PRESETS[key];
+                updateTokenizer();
+            }
+        });
+
+        document.getElementById("btn-clear-text").addEventListener("click", () => {
+            inputText.value = "";
+            updateTokenizer();
+            inputText.focus();
+        });
+
+        document.getElementById("btn-copy-ids").addEventListener("click", () => {
+            navigator.clipboard.writeText(jsonArrayBox.innerText);
+            const btn = document.getElementById("btn-copy-ids");
+            btn.innerText = "Copied! ✅";
+            setTimeout(() => { btn.innerText = "Copy JSON Array"; }, 1500);
+        });
+
+        // DECODE TAB LOGIC
+        function runDecode() {
+            const inputStr = document.getElementById("decode-input-ids").value;
+            const modelName = document.getElementById("decode-model-select").value;
+            const outputText = document.getElementById("decode-output-text");
+            const decodeStream = document.getElementById("decode-stream");
+
+            const nums = inputStr.match(/\d+/g);
+            if (!nums) {
+                outputText.value = "No valid integer token IDs found.";
+                decodeStream.innerHTML = "";
+                return;
+            }
+
+            const tokens = nums.map(n => parseInt(n, 10));
+            const enc = getEnc(modelName);
+            const fullDecoded = enc.decode(tokens);
+            outputText.value = fullDecoded;
+
+            let chipsHtml = "";
+            tokens.forEach((id, idx) => {
+                const color = PALETTE[idx % PALETTE.length];
+                const rawStr = enc.decode([id]);
+                const displayStr = formatTokenHtml(rawStr, true);
+                const style = `background-color: ${color.bg}; border: 1px solid ${color.border}; color: ${color.text};`;
+                chipsHtml += `<span class="tok-chip" style="${style}">${displayStr}</span>`;
+            });
+            decodeStream.innerHTML = chipsHtml;
+        }
+
+        document.getElementById("btn-run-decode").addEventListener("click", runDecode);
+        document.getElementById("decode-input-ids").addEventListener("input", runDecode);
+
+        // COMPARE TAB LOGIC
+        function runComparison() {
+            const text = document.getElementById("compare-input-text").value;
+            const container = document.getElementById("compare-results");
+            if (!text.trim()) {
+                container.innerHTML = '<div style="color: var(--text-muted);">Enter text above to compare.</div>';
+                return;
+            }
+
+            const models = ["o200k_base", "cl100k_base", "p50k_base", "r50k_base", "gpt2"];
+            const baselineTokens = getEnc("o200k_base").encode(text).length;
+
+            let html = "";
+            models.forEach(m => {
+                const enc = getEnc(m);
+                const tokens = enc.encode(text);
+                const count = tokens.length;
+                const ratio = (text.length / count).toFixed(2);
+                const diff = count === baselineTokens 
+                    ? "Baseline (0%)" 
+                    : `${(((count - baselineTokens) / baselineTokens) * 100).toFixed(1)}% vs o200k`;
+
+                let chipsHtml = "";
+                tokens.forEach((id, idx) => {
+                    const color = PALETTE[idx % PALETTE.length];
+                    const rawStr = enc.decode([id]);
+                    const displayStr = formatTokenHtml(rawStr, true);
+                    const style = `background-color: ${color.bg}; border: 1px solid ${color.border}; color: ${color.text};`;
+                    chipsHtml += `<span class="tok-chip" style="${style}">${displayStr}</span>`;
+                });
+
+                html += `
+                    <div class="compare-card">
+                        <div class="compare-header">
+                            <div>
+                                <span class="compare-name">${m}</span>
+                            </div>
+                            <div>
+                                <strong>${count}</strong> tokens &bull; ${ratio} chars/tok &bull; <span style="font-weight: 600; color: var(--accent-primary);">${diff}</span>
+                            </div>
+                        </div>
+                        <div class="tokens-stream" style="max-height: 220px; line-height: 2.1;">${chipsHtml}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        document.getElementById("btn-run-compare").addEventListener("click", runComparison);
+        document.getElementById("compare-input-text").addEventListener("input", runComparison);
+
+        // Initial run
+        updateTokenizer();
+    </script>
+</body>
+</html>
+
