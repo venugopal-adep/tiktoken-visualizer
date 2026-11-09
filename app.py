@@ -57,20 +57,24 @@ ENCODING_INFO = {
     },
 }
 
-# 12 vibrant token colors designed for high contrast and readability
+# 16 vibrant token colors designed for high contrast and readability
 COLOR_PALETTE = [
-    {"bg": "#ede9fe", "border": "#8b5cf6", "text": "#5b21b6"},  # Violet
-    {"bg": "#dbeafe", "border": "#3b82f6", "text": "#1e40af"},  # Blue
-    {"bg": "#dcfce7", "border": "#22c55e", "text": "#166534"},  # Green
-    {"bg": "#fef3c7", "border": "#f59e0b", "text": "#92400e"},  # Amber
-    {"bg": "#fee2e2", "border": "#ef4444", "text": "#991b1b"},  # Red
-    {"bg": "#fce7f3", "border": "#ec4899", "text": "#9d174d"},  # Pink
-    {"bg": "#ccfbf1", "border": "#14b8a6", "text": "#115e59"},  # Teal
-    {"bg": "#ffedd5", "border": "#f97316", "text": "#9a3412"},  # Orange
-    {"bg": "#e0e7ff", "border": "#6366f1", "text": "#3730a3"},  # Indigo
-    {"bg": "#ecfccb", "border": "#84cc16", "text": "#3f6212"},  # Lime
-    {"bg": "#cffafe", "border": "#06b6d4", "text": "#155e75"},  # Cyan
-    {"bg": "#f3e8ff", "border": "#a855f7", "text": "#6b21a8"},  # Purple
+    {"bg": "#ede9fe", "border": "#8b5cf6", "text": "#4c1d95"},  # Violet
+    {"bg": "#dbeafe", "border": "#3b82f6", "text": "#1e3a8a"},  # Blue
+    {"bg": "#ccfbf1", "border": "#14b8a6", "text": "#0f766e"},  # Teal
+    {"bg": "#dcfce7", "border": "#22c55e", "text": "#14532d"},  # Green
+    {"bg": "#fef3c7", "border": "#f59e0b", "text": "#78350f"},  # Amber
+    {"bg": "#ffedd5", "border": "#f97316", "text": "#7c2d12"},  # Orange
+    {"bg": "#fee2e2", "border": "#ef4444", "text": "#7f1d1d"},  # Red
+    {"bg": "#fce7f3", "border": "#ec4899", "text": "#831843"},  # Pink
+    {"bg": "#f3e8ff", "border": "#a855f7", "text": "#581c87"},  # Purple
+    {"bg": "#e0e7ff", "border": "#6366f1", "text": "#312e81"},  # Indigo
+    {"bg": "#ecfccb", "border": "#84cc16", "text": "#365314"},  # Lime
+    {"bg": "#cffafe", "border": "#06b6d4", "text": "#164e63"},  # Cyan
+    {"bg": "#ffe4e6", "border": "#f43f5e", "text": "#881337"},  # Rose
+    {"bg": "#fae8ff", "border": "#d946ef", "text": "#701a75"},  # Fuchsia
+    {"bg": "#e0f2fe", "border": "#0284c7", "text": "#0c4a6e"},  # Sky
+    {"bg": "#fef9c3", "border": "#eab308", "text": "#713f12"},  # Yellow
 ]
 
 # Preset Samples
@@ -378,29 +382,39 @@ body, .gradio-container {
 }
 
 .hero-banner {
-    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 40%, #8b5cf6 70%, #ec4899 100%);
-    border-radius: 16px;
-    padding: 24px 30px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 25%, #ec4899 55%, #f97316 85%, #eab308 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease infinite;
+    border-radius: 18px;
+    padding: 26px 32px;
     color: white;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25);
+    margin-bottom: 22px;
+    box-shadow: 0 14px 34px -8px rgba(99, 102, 241, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .hero-title {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 800;
     margin: 0 0 6px 0;
     letter-spacing: -0.5px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 .hero-subtitle {
-    font-size: 14.5px;
-    opacity: 0.94;
+    font-size: 15px;
+    opacity: 0.96;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .tokens-wrapper {
@@ -476,24 +490,24 @@ body, .gradio-container {
 }
 
 .tok-chip {
-    display: inline;
-    padding: 3px 6px;
-    margin: 1.5px;
-    border-radius: 5px;
+    display: inline-block;
+    padding: 3px 7px;
+    margin: 2px 2px;
+    border-radius: 6px;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.15s ease-in-out;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .tok-chip:hover {
-    filter: brightness(0.90);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
-    z-index: 10;
+    filter: brightness(0.92);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px) scale(1.08);
+    z-index: 50;
+    position: relative;
 }
 
 .whitespace-glyph {
@@ -512,17 +526,26 @@ body, .gradio-container {
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 14px;
 }
 
 .metric-card {
-    background: #f8fafc;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 12px 14px;
+    border-radius: 12px;
+    padding: 14px 16px;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(99, 102, 241, 0.15);
 }
 
 .dark .metric-card {
@@ -532,9 +555,9 @@ body, .gradio-container {
 
 .metric-label {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     color: #64748b;
     margin-bottom: 4px;
 }
@@ -544,8 +567,8 @@ body, .gradio-container {
 }
 
 .metric-value {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     color: #0f172a;
     font-family: 'JetBrains Mono', monospace;
 }

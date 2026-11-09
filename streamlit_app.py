@@ -19,15 +19,17 @@ ENCODING_INFO = {
         "label": "o200k_base (GPT-4o, GPT-4o mini)",
         "models": "GPT-4o, GPT-4o mini",
         "vocab_size": "200,019",
-        "description": "OpenAI's latest state-of-the-art tokenizer with 200k vocabulary. Drastically improves compression on non-English text, code, and math.",
+        "description": "OpenAI's flagship 200k vocabulary tokenizer. Drastically improves compression on non-English text, code, and math.",
         "cost_input_per_m": 2.50,
+        "badge_color": "#10b981",
     },
     "cl100k_base": {
         "label": "cl100k_base (GPT-4, GPT-3.5 Turbo)",
-        "models": "GPT-4, GPT-4 Turbo, GPT-3.5 Turbo, text-embedding-ada-002, text-embedding-3",
+        "models": "GPT-4, GPT-4 Turbo, GPT-3.5 Turbo, Ada-002",
         "vocab_size": "100,277",
-        "description": "Standard workhorse tokenizer for GPT-4 and GPT-3.5 Turbo with 100k vocabulary.",
+        "description": "Standard workhorse tokenizer for GPT-4 and GPT-3.5 Turbo.",
         "cost_input_per_m": 10.00,
+        "badge_color": "#6366f1",
     },
     "p50k_base": {
         "label": "p50k_base (Codex, text-davinci-002/003)",
@@ -35,13 +37,15 @@ ENCODING_INFO = {
         "vocab_size": "50,281",
         "description": "Optimized for programming languages and source code.",
         "cost_input_per_m": 20.00,
+        "badge_color": "#f59e0b",
     },
     "p50k_edit": {
         "label": "p50k_edit (text-davinci-edit-001)",
         "models": "text-davinci-edit-001, code-davinci-edit-001",
         "vocab_size": "50,284",
-        "description": "Specialized tokenizer for OpenAI edit and insertion endpoints.",
+        "description": "Specialized tokenizer for OpenAI edit endpoints.",
         "cost_input_per_m": 20.00,
+        "badge_color": "#ec4899",
     },
     "r50k_base": {
         "label": "r50k_base (GPT-3 Legacy)",
@@ -49,6 +53,7 @@ ENCODING_INFO = {
         "vocab_size": "50,257",
         "description": "Original GPT-3 50k vocabulary tokenizer.",
         "cost_input_per_m": 20.00,
+        "badge_color": "#8b5cf6",
     },
     "gpt2": {
         "label": "gpt2 (GPT-2 Foundational)",
@@ -56,122 +61,290 @@ ENCODING_INFO = {
         "vocab_size": "50,257",
         "description": "The foundational BPE tokenizer from the 2019 GPT-2 paper.",
         "cost_input_per_m": 0.00,
+        "badge_color": "#06b6d4",
     },
 }
 
+# 16 High-Vibrancy Pastel/Neon Palette with High Contrast
 COLOR_PALETTE = [
-    {"bg": "#ede9fe", "border": "#8b5cf6", "text": "#5b21b6"},  # Violet
-    {"bg": "#dbeafe", "border": "#3b82f6", "text": "#1e40af"},  # Blue
-    {"bg": "#dcfce7", "border": "#22c55e", "text": "#166534"},  # Green
-    {"bg": "#fef3c7", "border": "#f59e0b", "text": "#92400e"},  # Amber
-    {"bg": "#fee2e2", "border": "#ef4444", "text": "#991b1b"},  # Red
-    {"bg": "#fce7f3", "border": "#ec4899", "text": "#9d174d"},  # Pink
-    {"bg": "#ccfbf1", "border": "#14b8a6", "text": "#115e59"},  # Teal
-    {"bg": "#ffedd5", "border": "#f97316", "text": "#9a3412"},  # Orange
-    {"bg": "#e0e7ff", "border": "#6366f1", "text": "#3730a3"},  # Indigo
-    {"bg": "#ecfccb", "border": "#84cc16", "text": "#3f6212"},  # Lime
-    {"bg": "#cffafe", "border": "#06b6d4", "text": "#155e75"},  # Cyan
-    {"bg": "#f3e8ff", "border": "#a855f7", "text": "#6b21a8"},  # Purple
+    {"bg": "#ede9fe", "border": "#8b5cf6", "text": "#4c1d95", "shadow": "rgba(139, 92, 246, 0.35)"},  # Violet
+    {"bg": "#dbeafe", "border": "#3b82f6", "text": "#1e3a8a", "shadow": "rgba(59, 130, 246, 0.35)"},  # Blue
+    {"bg": "#ccfbf1", "border": "#14b8a6", "text": "#0f766e", "shadow": "rgba(20, 184, 166, 0.35)"},  # Teal
+    {"bg": "#dcfce7", "border": "#22c55e", "text": "#14532d", "shadow": "rgba(34, 197, 94, 0.35)"},  # Green
+    {"bg": "#fef3c7", "border": "#f59e0b", "text": "#78350f", "shadow": "rgba(245, 158, 11, 0.35)"},  # Amber
+    {"bg": "#ffedd5", "border": "#f97316", "text": "#7c2d12", "shadow": "rgba(249, 115, 22, 0.35)"},  # Orange
+    {"bg": "#fee2e2", "border": "#ef4444", "text": "#7f1d1d", "shadow": "rgba(239, 68, 68, 0.35)"},  # Red
+    {"bg": "#fce7f3", "border": "#ec4899", "text": "#831843", "shadow": "rgba(236, 72, 153, 0.35)"},  # Pink
+    {"bg": "#f3e8ff", "border": "#a855f7", "text": "#581c87", "shadow": "rgba(168, 85, 247, 0.35)"},  # Purple
+    {"bg": "#e0e7ff", "border": "#6366f1", "text": "#312e81", "shadow": "rgba(99, 102, 241, 0.35)"},  # Indigo
+    {"bg": "#ecfccb", "border": "#84cc16", "text": "#365314", "shadow": "rgba(132, 204, 22, 0.35)"},  # Lime
+    {"bg": "#cffafe", "border": "#06b6d4", "text": "#164e63", "shadow": "rgba(6, 182, 212, 0.35)"},  # Cyan
+    {"bg": "#ffe4e6", "border": "#f43f5e", "text": "#881337", "shadow": "rgba(244, 63, 94, 0.35)"},  # Rose
+    {"bg": "#fae8ff", "border": "#d946ef", "text": "#701a75", "shadow": "rgba(217, 70, 239, 0.35)"},  # Fuchsia
+    {"bg": "#e0f2fe", "border": "#0284c7", "text": "#0c4a6e", "shadow": "rgba(2, 132, 199, 0.35)"},  # Sky
+    {"bg": "#fef9c3", "border": "#eab308", "text": "#713f12", "shadow": "rgba(234, 179, 8, 0.35)"},  # Yellow
 ]
 
 PRESETS = {
     "👋 Hello World & Punctuation": "Hello, world! Welcome to the interactive Tiktokenizer visualizer. How does Byte Pair Encoding work?",
-    "🐍 Python Code & Whitespace": """def fibonacci(n: int) -> list[int]:
-    \"\"\"Return first n Fibonacci numbers.\"\"\"
+    "🐍 Python Fibonacci Code": """def fibonacci(n: int) -> list[int]:
+    \"\"\"Return first n Fibonacci numbers with recursion & memoization.\"\"\"
     if n <= 0:
         return []
     seq = [0, 1]
     while len(seq) < n:
         seq.append(seq[-1] + seq[-2])
     return seq[:n]""",
-    "🌍 Multilingual & Emojis": "OpenAI GPT-4o supports multilingual tokenization! 🚀\nहिंदी: नमस्ते दुनिया, आप कैसे हैं?\n日本語: こんにちは世界！\nالعربية: مرحباً بالعالم\nFrançais: Bonjour le monde! 🌍✨",
-    "🔢 Numbers & Math Expressions": "Calculate: 1234567890 + 9876543210 = 11111111100\nPi: 3.141592653589793\nPrice: $49.99 (Discount: 15% off) -> Total: $42.49",
-    "🔒 Special Tokens": "<|endoftext|>\n<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nHello!<|im_end|>",
+    "🌍 Multilingual & Emojis": "OpenAI GPT-4o supports multilingual tokenization! 🚀✨\nहिंदी: नमस्ते दुनिया, कृत्रिम बुद्धिमत्ता का युग आ गया है!\n日本語: こんにちは世界！AI技術の革新です。\nالعربية: مرحباً بالعالم! الذكاء الاصطناعي يغير المستقبل.\nFrançais: Bonjour le monde! L'intelligence artificielle est magique 🌟",
+    "🔢 Numbers, Math & Currencies": "Math equation: 1234567890 + 9876543210 = 11111111100\nConstants: π ≈ 3.1415926535, e ≈ 2.718281828\nCurrency: $49.99 USD = €46.20 EUR = ₹4,180 INR (Discount: 15% off!)",
+    "🔒 Special Tokens & ChatML": "<|endoftext|>\n<|im_start|>system\nYou are a helpful and knowledgeable AI assistant.<|im_end|>\n<|im_start|>user\nExplain BPE in one sentence.<|im_end|>\n<|im_start|>assistant\nBPE merges frequent character bytes into subwords.<|im_end|>",
 }
 
-# Custom CSS for Tiktokenizer aesthetic
+# Inject Ultra-Colorful Modern Theme CSS
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-.hero-box {
-    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 40%, #8b5cf6 70%, #ec4899 100%);
-    border-radius: 14px;
-    padding: 22px 28px;
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+/* Aurora Hero Banner */
+.aurora-hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 25%, #ec4899 55%, #f97316 85%, #eab308 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease infinite;
+    border-radius: 20px;
+    padding: 30px 36px;
     color: white;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.25);
+    margin-bottom: 24px;
+    box-shadow: 0 16px 36px -10px rgba(99, 102, 241, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.hero-title {
-    font-size: 28px;
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.aurora-title {
+    font-size: 34px;
     font-weight: 800;
-    margin: 0 0 4px 0;
-    color: white !important;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.hero-sub {
-    font-size: 14px;
-    opacity: 0.94;
-    margin: 0;
+.aurora-sub {
+    font-size: 15.5px;
+    opacity: 0.96;
+    max-width: 820px;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
-.tokens-container {
+.hero-pill-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-pill {
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Glowing Metrics Dashboard */
+.metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.metric-glass-card {
     background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    padding: 16px;
-    min-height: 120px;
-    max-height: 480px;
-    overflow-y: auto;
-    line-height: 2.2;
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px -4px rgba(99, 102, 241, 0.18);
+}
+
+.metric-glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.card-tokens::before { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+.card-chars::before { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.card-ratio::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+.card-bytes::before { background: linear-gradient(90deg, #f59e0b, #f97316); }
+.card-cost::before { background: linear-gradient(90deg, #8b5cf6, #d946ef); }
+
+.m-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.m-val {
+    font-size: 26px;
+    font-weight: 800;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.m-sub {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 3px;
+    font-weight: 500;
+}
+
+/* Token Stream Visualizer Container */
+.tokens-stage {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 22px;
+    min-height: 140px;
+    max-height: 520px;
+    overflow-y: auto;
+    line-height: 2.3;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
     white-space: pre-wrap;
     word-break: break-word;
-    margin-bottom: 16px;
+    box-shadow: 0 4px 20px -3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
 }
 
 .tok-chip {
-    display: inline;
-    padding: 3px 6px;
-    margin: 1.5px;
-    border-radius: 5px;
+    display: inline-block;
+    padding: 3.5px 7.5px;
+    margin: 2px 2px;
+    border-radius: 7px;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.15s ease-in-out;
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.tok-chip:hover {
+    transform: translateY(-2px) scale(1.08);
+    filter: brightness(0.92);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+    z-index: 50;
+    position: relative;
 }
 
 .whitespace-glyph {
     opacity: 0.45;
-    font-size: 12px;
+    font-size: 13px;
+    user-select: none;
+    font-weight: 700;
 }
 
 .newline-glyph {
-    opacity: 0.65;
-    font-size: 12px;
+    opacity: 0.75;
+    font-size: 13px;
+    user-select: none;
     color: #ef4444;
+    font-weight: 800;
 }
 
-.compare-card {
+/* Multi-Model Comparison Cards */
+.compare-box {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 14px;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
 }
 
-.compare-title {
-    font-weight: 700;
+.compare-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
+}
+
+.comp-model-name {
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
     color: #4f46e5;
+}
+
+.comp-pill-badge {
+    background: #e0e7ff;
+    color: #4338ca;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.comp-stat-badge {
+    font-size: 13.5px;
+    color: #475569;
+}
+
+.gain-tag-better {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.gain-tag-worse {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Helper functions
+# Helper Functions
 @st.cache_resource
 def get_cached_encoding(name: str):
     return tiktoken.get_encoding(name)
@@ -200,7 +373,7 @@ def format_token_text(raw_bytes: bytes, show_whitespace: bool) -> tuple[str, str
 
 def render_chips_html(tokens: list[int], enc, show_whitespace: bool) -> str:
     if not tokens:
-        return '<div style="color: #94a3b8; font-style: italic;">Enter text above to see tokens rendered.</div>'
+        return '<div style="color: #94a3b8; font-style: italic; padding: 20px; text-align: center;">Enter text above to see tokens rendered.</div>'
     
     chips = []
     for idx, t in enumerate(tokens):
@@ -212,55 +385,71 @@ def render_chips_html(tokens: list[int], enc, show_whitespace: bool) -> str:
         
         display_str, plain_str = format_token_text(b, show_whitespace)
         hex_id = f"0x{t:04X}"
-        tooltip = f"Token #{idx} | ID: {t} ({hex_id}) | Bytes: {len(b)} | String: {repr(plain_str)}"
-        style = f"background-color: {color['bg']}; border: 1px solid {color['border']}; color: {color['text']};"
+        byte_hex = " ".join(f"0x{x:02X}" for x in b)
+        tooltip = f"Token #{idx} | ID: {t} ({hex_id}) | Bytes: {len(b)} ({byte_hex}) | String: {repr(plain_str)}"
+        style = f"background-color: {color['bg']}; border: 1.5px solid {color['border']}; color: {color['text']};"
         chips.append(f'<span class="tok-chip" title="{html.escape(tooltip)}" style="{style}">{display_str}</span>')
     
-    return f'<div class="tokens-container">{"".join(chips)}</div>'
+    return f'<div class="tokens-stage">{"".join(chips)}</div>'
 
-# Hero Banner
+# Aurora Gradient Hero Header
 st.markdown("""
-<div class="hero-box">
-    <div class="hero-title">TikTokenizer Studio 🔠</div>
-    <div class="hero-sub">Interactive Byte Pair Encoding (BPE) Visualizer & Multi-Model Token Inspector for OpenAI Models</div>
+<div class="aurora-hero">
+    <div class="aurora-title">TikTokenizer Studio 🔠✨</div>
+    <div class="aurora-sub">
+        Explore Byte Pair Encoding (BPE) interactively. Visualize token boundaries with vivid colors, analyze compression efficiency, inspect raw byte sequences, and compare OpenAI models side-by-side.
+    </div>
+    <div class="hero-pill-bar">
+        <span class="hero-pill">⚡ o200k_base (GPT-4o)</span>
+        <span class="hero-pill">🚀 cl100k_base (GPT-4)</span>
+        <span class="hero-pill">🐍 Codex p50k</span>
+        <span class="hero-pill">💎 Multi-Color Chips</span>
+        <span class="hero-pill">📊 Real-Time Cost Analysis</span>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar Configuration
-st.sidebar.header("⚙️ Configuration")
+# Sidebar Controls
+st.sidebar.markdown("### 🎛️ Tokenizer Settings")
 selected_model = st.sidebar.selectbox(
-    "Tokenizer Encoding",
+    "Select BPE Encoding",
     options=list(ENCODING_INFO.keys()),
     index=0,
     format_func=lambda k: ENCODING_INFO[k]["label"],
 )
 
 info = ENCODING_INFO[selected_model]
-st.sidebar.caption(f"**Vocab Size**: {info['vocab_size']} | **Models**: {info['models']}")
+st.sidebar.info(f"**Vocab Size**: `{info['vocab_size']}`\n\n**Models**: {info['models']}\n\n{info['description']}")
 
-st.sidebar.divider()
-selected_preset = st.sidebar.selectbox("Load Example Snippet", options=["-- None --"] + list(PRESETS.keys()))
+st.sidebar.markdown("### 📋 Quick Preset Library")
+selected_preset = st.sidebar.selectbox("Choose a prompt example", options=["-- Custom Text --"] + list(PRESETS.keys()))
 
-st.sidebar.divider()
-show_ws = st.sidebar.checkbox("Show whitespace glyphs (·, ↵, ⇥)", value=True)
-allow_special = st.sidebar.checkbox("Allow Special Tokens (e.g. <|endoftext|>)", value=True)
+st.sidebar.markdown("### 👁️ Visual Display Options")
+show_ws = st.sidebar.checkbox("Show whitespace symbols (`·` space, `↵` newline, `⇥` tab)", value=True)
+allow_special = st.sidebar.checkbox("Allow Special Tokens (e.g. `<|endoftext|>`)", value=True)
 
-# Main Navigation Tabs
+# Main Tabs
 tab_encode, tab_decode, tab_compare, tab_guide = st.tabs([
     "🔍 Visual Tokenizer (Encode)",
     "🔄 Token Decoder (Decode)",
     "⚖️ Multi-Model Comparison",
-    "📚 BPE Deep Dive",
+    "📚 BPE Educational Deep Dive",
 ])
 
-# Default text handling
+# Default text
 default_text = "Hello, world! 🌍 Welcome to TikTokenizer Studio.\nTry typing or pasting any text, code, or emojis to visualize the tokens in real-time."
-if selected_preset != "-- None --" and selected_preset in PRESETS:
+if selected_preset != "-- Custom Text --" and selected_preset in PRESETS:
     default_text = PRESETS[selected_preset]
 
 # TAB 1: ENCODE
 with tab_encode:
-    user_text = st.text_area("Input Text", value=default_text, height=130, placeholder="Type or paste text here...")
+    user_text = st.text_area(
+        "Enter text to tokenize:",
+        value=default_text,
+        height=140,
+        placeholder="Type or paste text, code, or prompts here...",
+        help="Type any text to see token boundaries update in real-time"
+    )
     
     enc = get_cached_encoding(selected_model)
     if user_text:
@@ -275,7 +464,6 @@ with tab_encode:
     else:
         tokens = []
 
-    # Metrics
     tok_count = len(tokens)
     char_count = len(user_text)
     byte_count = len(user_text.encode("utf-8"))
@@ -283,26 +471,52 @@ with tab_encode:
     cost_per_m = info.get("cost_input_per_m", 2.50)
     est_cost = (tok_count / 1_000_000.0) * cost_per_m
 
-    m1, m2, m3, m4, m5 = st.columns(5)
-    m1.metric("Tokens", f"{tok_count:,}")
-    m2.metric("Characters", f"{char_count:,}")
-    m3.metric("Chars / Token", f"{ratio:.2f}")
-    m4.metric("Bytes (UTF-8)", f"{byte_count:,}")
-    m5.metric("Est. Cost", f"${est_cost:.6f}")
+    # Glossy Modern Metric Cards
+    st.markdown(f"""
+    <div class="metrics-row">
+        <div class="metric-glass-card card-tokens">
+            <div class="m-label">Tokens</div>
+            <div class="m-val">{tok_count:,}</div>
+            <div class="m-sub">Generated chunks</div>
+        </div>
+        <div class="metric-glass-card card-chars">
+            <div class="m-label">Characters</div>
+            <div class="m-val">{char_count:,}</div>
+            <div class="m-sub">String length</div>
+        </div>
+        <div class="metric-glass-card card-ratio">
+            <div class="m-label">Chars / Token</div>
+            <div class="m-val">{ratio:.2f}</div>
+            <div class="m-sub">Compression power</div>
+        </div>
+        <div class="metric-glass-card card-bytes">
+            <div class="m-label">Bytes</div>
+            <div class="m-val">{byte_count:,}</div>
+            <div class="m-sub">UTF-8 payload</div>
+        </div>
+        <div class="metric-glass-card card-cost">
+            <div class="m-label">Est. Cost</div>
+            <div class="m-val">${est_cost:.6f}</div>
+            <div class="m-sub">@ ${cost_per_m:.2f} / 1M tok</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.subheader("Color-Coded Token Stream")
+    st.markdown("#### 🎨 Color-Coded Token Stream")
     chips_html = render_chips_html(tokens, enc, show_ws)
     st.markdown(chips_html, unsafe_allow_html=True)
-    st.caption("💡 Hover over any token chip to view its Token ID, byte length, and raw string.")
+    st.caption("💡 **Tip:** Hover your mouse over any token badge to inspect its Decimal ID, Hex code, UTF-8 bytes, and string.")
 
-    with st.expander("📋 Token IDs & Sequence Formats", expanded=False):
+    with st.expander("📋 Export Token IDs & Sequences", expanded=False):
         c1, c2 = st.columns(2)
         with c1:
-            st.text_area("Python / JSON Array", value=json.dumps(tokens), height=80)
+            st.markdown("**Python / JSON Array:**")
+            st.code(json.dumps(tokens), language="json")
         with c2:
-            st.text_area("Space-Separated IDs", value=" ".join(str(t) for t in tokens), height=80)
+            st.markdown("**Space-Separated Integers:**")
+            st.code(" ".join(str(t) for t in tokens), language="text")
 
-    with st.expander("📊 Detailed Token Inspector Table", expanded=False):
+    with st.expander("📊 Detailed Token Breakdown Table", expanded=False):
         if tokens:
             rows = []
             for idx, t in enumerate(tokens):
@@ -321,23 +535,28 @@ with tab_encode:
                     "Hex": f"0x{t:04X}",
                     "Decoded String": repr(s)[1:-1],
                     "Bytes (Hex)": " ".join(f"0x{x:02X}" for x in b),
-                    "Length": f"{len(b)}B",
+                    "Length": f"{len(b)} bytes",
                 })
             st.dataframe(pd.DataFrame(rows), use_container_width=True)
 
 # TAB 2: DECODE
 with tab_decode:
-    st.markdown("### Decode Token IDs back to Original Text")
-    st.markdown("Enter integer token IDs (comma-separated, space-separated, or JSON list).")
+    st.markdown("### 🔄 Decode Token IDs Back to Text")
+    st.markdown("Paste integer token IDs (e.g. from an API response, logs, or JSON array):")
     
     decode_model = st.selectbox(
-        "Decoder Encoding",
+        "Decoder Model Encoding",
         options=list(ENCODING_INFO.keys()),
         index=0,
         format_func=lambda k: ENCODING_INFO[k]["label"],
         key="decode_model_key"
     )
-    decode_input = st.text_area("Token IDs Input", value="13225, 11, 2375, 0, 130321, 235", height=90)
+    decode_input = st.text_area(
+        "Token IDs Input",
+        value="13225, 11, 2375, 0, 130321, 235",
+        height=90,
+        placeholder="e.g. 13225, 11, 2375, 0"
+    )
     
     if decode_input.strip():
         nums = re.findall(r"\d+", decode_input)
@@ -346,18 +565,19 @@ with tab_decode:
             d_enc = get_cached_encoding(decode_model)
             try:
                 decoded_str = d_enc.decode(dec_tokens)
-                st.text_area("Decoded Plain Text", value=decoded_str, height=100)
-                st.subheader("Reconstructed Token Visualizer")
+                st.markdown("**Decoded String:**")
+                st.text_area("Decoded Output Text", value=decoded_str, height=100, label_visibility="collapsed")
+                st.markdown("**Reconstructed Token Pills:**")
                 st.markdown(render_chips_html(dec_tokens, d_enc, show_ws), unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Decoding failed: {e}")
         else:
             st.warning("No valid integer token IDs found in input.")
 
-# TAB 3: MULTI-MODEL COMPARISON
+# TAB 3: COMPARE
 with tab_compare:
-    st.markdown("### Compare BPE Tokenizers Side-by-Side")
-    st.markdown("See how different generations of tokenizers encode the exact same text:")
+    st.markdown("### ⚖️ Multi-Model Side-by-Side Comparison")
+    st.markdown("See how BPE tokenizers compress the same prompt across OpenAI model generations:")
     
     comp_text = st.text_area(
         "Comparison Text",
@@ -375,7 +595,14 @@ with tab_compare:
             m_tokens = m_enc.encode(comp_text)
             cnt = len(m_tokens)
             chars_tok = (len(comp_text) / cnt) if cnt > 0 else 0.0
-            diff = "Baseline (0%)" if cnt == base_tokens else f"+{(((cnt - base_tokens) / base_tokens) * 100):.1f}% more tokens"
+            
+            if cnt == base_tokens:
+                diff_tag = '<span class="gain-tag-better">Baseline (0%)</span>'
+                diff_str = "Baseline (0%)"
+            else:
+                pct = ((cnt - base_tokens) / base_tokens) * 100
+                diff_tag = f'<span class="gain-tag-worse">+{pct:.1f}% more tokens</span>'
+                diff_str = f"+{pct:.1f}%"
             
             comp_rows.append({
                 "Encoding": m,
@@ -383,26 +610,32 @@ with tab_compare:
                 "Vocab Size": ENCODING_INFO[m]["vocab_size"],
                 "Tokens": cnt,
                 "Chars/Token": round(chars_tok, 2),
-                "Efficiency vs o200k": diff,
+                "Efficiency vs o200k": diff_str,
             })
             
             with st.container():
                 st.markdown(f"""
-                <div class="compare-card">
-                    <span class="compare-title">{m}</span> &bull; 
-                    <strong>{cnt}</strong> tokens &bull; {chars_tok:.2f} chars/tok &bull; 
-                    <span style="color: #4f46e5; font-weight: 600;">{diff}</span>
+                <div class="compare-box">
+                    <div class="compare-head">
+                        <div>
+                            <span class="comp-model-name">{m}</span>
+                            <span class="comp-pill-badge">{ENCODING_INFO[m]['models']}</span>
+                        </div>
+                        <div class="comp-stat-badge">
+                            <strong>{cnt}</strong> tokens &bull; {chars_tok:.2f} chars/tok &bull; {diff_tag}
+                        </div>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown(render_chips_html(m_tokens, m_enc, show_ws), unsafe_allow_html=True)
         
-        st.subheader("Summary Table")
+        st.markdown("#### 📊 Summary Benchmark Table")
         st.dataframe(pd.DataFrame(comp_rows), use_container_width=True)
 
 # TAB 4: GUIDE
 with tab_guide:
     st.markdown("""
-    ## Understanding Byte Pair Encoding (BPE) & Tiktoken
+    ## 📚 Understanding Byte Pair Encoding (BPE) & Tiktoken
 
     ### 1. What is Byte Pair Encoding?
     Language models don't read words or letters directly—they operate on integer **Tokens**. 
